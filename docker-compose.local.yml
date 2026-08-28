@@ -1,0 +1,12 @@
+# Local testing only — no domain, no HTTPS, no Caddy. Just the site
+# container on plain HTTP, so you can validate the same Dockerfile/build
+# that will later run on the VPS.
+#
+# Usage:
+#   docker compose -f docker-compose.local.yml up --build
+#   open http://localhost:8080
+services:
+  site:
+    build: .
+    ports:
+      - "8080:80"

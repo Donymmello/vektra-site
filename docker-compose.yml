@@ -1,0 +1,37 @@
+services:
+  site:
+    build: .
+    image: vektra-site:latest
+    restart: unless-stopped
+    networks: [web]
+    # No published ports: only reachable from other containers on the
+    # shared `web` network (i.e. the `caddy` edge proxy below).
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:-vektratechnologies.com}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@vektratechnologies.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [web]
+    depends_on:
+      - site
+
+# Shared, pre-created network — see DEPLOY.md. Keeping it `external` lets
+# other service stacks on the same VPS join `web` and be proxied by this
+# same Caddy instance later, without touching this compose file.
+networks:
+  web:
+    name: web
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
