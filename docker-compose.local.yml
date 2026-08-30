@@ -1,5 +1,5 @@
-# Local testing only — no domain, no HTTPS, no Caddy. Just the site
-# container on plain HTTP, so you can validate the same Dockerfile/build
+# Local testing only — no domain, no HTTPS, no Caddy. Just the site + api
+# containers on plain HTTP, so you can validate the same Dockerfile/build
 # that will later run on the VPS.
 #
 # Usage:
@@ -10,3 +10,18 @@ services:
     build: .
     ports:
       - "8080:80"
+    depends_on:
+      - api
+
+  api:
+    build: ./server
+    env_file:
+      - path: ./server/.env
+        required: false
+    environment:
+      - CORS_ORIGIN=http://localhost:8080
+    volumes:
+      - api_data:/app/data
+
+volumes:
+  api_data:

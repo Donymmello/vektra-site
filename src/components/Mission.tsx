@@ -14,8 +14,8 @@ export function Mission() {
             Tecnologia com propósito, feita para durar.
           </h2>
           <p className="mt-4 max-w-xl text-ink/70">
-            Não vendemos apenas serviços — construímos relações de longo prazo com quem
-            confia em nós para sustentar o seu negócio.
+            O que oferecemos é uma relação de confiança a longo prazo, não apenas
+            serviços pontuais.
           </p>
         </div>
 
@@ -26,8 +26,8 @@ export function Mission() {
             </div>
             <h3 className="mt-5 font-display text-2xl font-bold">Missão</h3>
             <p className="mt-3 text-ink/70">
-              Entregar tecnologia acessível e de confiança — do registo de domínios ao
-              equipamento mais avançado — para que qualquer empresa em Moçambique possa
+              Entregar tecnologia acessível e de confiança, do registo de domínios ao
+              equipamento mais avançado, para que qualquer empresa em Moçambique possa
               operar ao nível internacional.
             </p>
           </article>
@@ -38,8 +38,8 @@ export function Mission() {
             </div>
             <h3 className="mt-5 font-display text-2xl font-bold">Visão</h3>
             <p className="mt-3 text-ink/70">
-              Ser reconhecida como o parceiro tecnológico de referência em Moçambique,
-              construindo os sistemas que vão mover os negócios do país na próxima década.
+              Ser o parceiro tecnológico de referência em Moçambique, com os sistemas que
+              vão mover os negócios do país na próxima década.
             </p>
           </article>
         </div>

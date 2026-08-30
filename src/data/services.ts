@@ -22,10 +22,10 @@ export type Service = {
 export const services: Service[] = [
   {
     id: "software",
-    title: "Desenvolvimento de Software",
+    title: "Desenvolvimento Web",
     description:
-      "Criamos software robusto e escalável — de aplicações web a integrações via API.",
-    bullets: ["Websites & Apps", "APIs", "Plataformas SaaS"],
+      "Criamos sistemas robustos e escaláveis, de aplicações web a integrações via API, focados em fazer crescer o seu negócio.",
+    bullets: ["Websites & Apps", "Integrações via API", "Plataformas SaaS"],
     icon: CodeIcon,
     span: "md",
   },
@@ -59,7 +59,7 @@ export const services: Service[] = [
     title: "Domínios & Hosting",
     badge: "Pacote completo",
     description:
-      "O seu negócio online em poucos dias — domínio, alojamento e email profissional, tudo num único pacote e sem complicações técnicas.",
+      "O seu negócio online em poucos dias, com domínio, alojamento e email profissional num único pacote, sem complicações técnicas.",
     bullets: [
       "Domínio incluído (.co.mz ou internacional)",
       "Alojamento seguro e rápido",
@@ -73,7 +73,7 @@ export const services: Service[] = [
     title: "Aquisição de Material Informático",
     description:
       "Computadores, servidores e equipamento de rede com garantia e suporte técnico.",
-    bullets: ["Computadores & portáteis", "Redes & periféricos", "Suporte técnico"],
+    bullets: ["Computadores & portáteis", "Redes & periféricos", "Suporte técnico", "Licenças"],
     icon: ServerIcon,
     span: "md",
   },

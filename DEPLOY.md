@@ -1,37 +1,58 @@
 # Docker: testar localmente e (mais tarde) publicar na VPS
 
 Ainda não há domínio nem VPS comprados — por agora isto corre só na sua
-máquina, em `http://localhost`. Há dois ficheiros compose:
+máquina, em `http://localhost`. Há três ficheiros compose:
 
-- **`docker-compose.local.yml`** — o que usa **agora**. Só o container do
-  site, em HTTP simples, numa porta local. Sem domínio, sem HTTPS, sem rede
-  partilhada.
+- **`docker-compose.dev.yml`** — para o dia a dia de desenvolvimento
+  (hot-reload, site + api). Ver `README.md`.
+- **`docker-compose.local.yml`** — para validar o **build de produção**
+  antes de publicar. Site + api em HTTP simples, em portas locais. Sem
+  domínio, sem HTTPS, sem rede partilhada.
 - **`docker-compose.yml`** — para quando tiver domínio + VPS (secção
   "Publicar na VPS" mais abaixo). Inclui o Caddy com HTTPS automático.
 
 ## Testar localmente (agora)
 
 ```bash
+cp server/.env.example server/.env   # opcional — sem isto, o formulário
+                                       # de contacto só regista o pedido e
+                                       # simula o envio, sem SMTP real
 docker compose -f docker-compose.local.yml up --build
 ```
 
 Abra **http://localhost:8080**. `Ctrl+C` para parar. Isto usa o mesmo
-`Dockerfile` que vai correr na VPS mais tarde — é a forma de confirmar que o
-build e o Nginx funcionam antes de haver domínio.
+`Dockerfile` (site e api) que vai correr na VPS mais tarde — é a forma de
+confirmar que o build, o Nginx e a API funcionam antes de haver domínio.
 
-(Nota: para o dia a dia de desenvolvimento — com hot-reload — continue a
-usar `npm run dev`, como no `README.md`. Este Docker local serve para
-validar o *build de produção*, não para editar o código.)
+(Nota: para o dia a dia de desenvolvimento — com hot-reload — use
+`docker compose -f docker-compose.dev.yml up` ou `npm run dev`, como no
+`README.md`. Este Docker local serve para validar o *build de produção*,
+não para editar o código.)
 
 ---
 
 ## Publicar na VPS (mais tarde)
 
-Quando tiver domínio + VPS, este projeto corre em dois containers:
+Quando tiver domínio + VPS, este projeto corre em três containers:
 
 - **`site`** — build de produção do Vite, servido por Nginx (sem porta pública).
+  O Nginx também encaminha `/api/*` para o container `api` (ver `nginx.conf`).
+- **`api`** — o pequeno servidor Node que trata o formulário de contacto
+  (envia o email e guarda cada pedido numa base de dados SQLite, num volume
+  persistente). Nunca fica exposto diretamente — só o `site` fala com ele.
 - **`caddy`** — proxy de borda com HTTPS automático (Let's Encrypt), que
   encaminha `vektratechnologies.com` para o container `site`.
+
+Antes do primeiro arranque, configure o email de envio:
+
+```bash
+cp server/.env.example server/.env
+# editar server/.env — SMTP_HOST, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
+```
+
+Sem isto, o site continua a funcionar normalmente — cada pedido de orçamento
+fica guardado na base de dados, só não é enviado por email até configurar o
+SMTP.
 
 Isto foi pensado para uma VPS que também vai correr **outros serviços**: o
 Caddy fica como o único processo a ocupar as portas 80/443, e outros stacks

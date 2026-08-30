@@ -18,7 +18,7 @@ export const products: Product[] = [
     name: "SGC-Vektra",
     category: "Gestão de Crédito",
     description:
-      "Gestão de todo o ciclo de crédito — da proposta à cobrança — com controlo de risco integrado.",
+      "Gestão de todo o ciclo de crédito, da proposta à cobrança, com controlo de risco integrado.",
     bullets: ["Propostas & aprovações", "Amortizações e cobranças", "Relatórios de risco"],
     icon: CreditCardIcon,
   },
@@ -37,7 +37,7 @@ export const products: Product[] = [
     name: "SGP-Vektra",
     category: "Gestão de Património",
     description:
-      "Controlo completo dos bens da sua organização — inventário, localização, manutenção e depreciação.",
+      "Controlo completo dos bens da sua organização: inventário, localização, manutenção e depreciação.",
     bullets: ["Inventário de bens", "Manutenção & depreciação", "Auditoria e localização"],
     icon: ArchiveIcon,
   },

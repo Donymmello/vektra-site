@@ -1,5 +1,4 @@
 import { Suspense, lazy } from "react"
-import { ArrowRightIcon } from "./icons"
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion"
 
 // Code-split: three.js + fiber only load once the hero mounts, instead of
@@ -35,20 +34,13 @@ export function Hero() {
 
           <p className="mt-6 max-w-xl text-lg text-white/75">
             Desenvolvimento de software, cloud, cibersegurança, domínios e equipamento
-            informático — tudo num só parceiro tecnológico, em Moçambique.
+            informático, tudo com um único parceiro tecnológico, em Moçambique.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 border-[3px] border-ink bg-lime px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-ink shadow-brutal transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-lg"
-            >
-              Pedir orçamento
-              <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
-            </a>
-            <a
               href="#servicos"
-              className="inline-flex items-center gap-2 border-[3px] border-white/70 bg-transparent px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-cyan hover:text-cyan"
+              className="inline-flex items-center gap-2 border-[3px] border-ink bg-lime px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-ink shadow-brutal transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-lg"
             >
               Ver serviços
             </a>

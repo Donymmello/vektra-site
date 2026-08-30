@@ -1,19 +1,41 @@
 import { type FormEvent, useState } from "react"
 import { ArrowRightIcon, MailIcon, GlobeIcon } from "./icons"
 
-// TODO(vektra): point this at the real inbox / form endpoint before launch.
 const CONTACT_EMAIL = "contacto@vektratechnologies.com"
 
-export function Contact() {
-  const [sent, setSent] = useState(false)
+type Status = "idle" | "sending" | "sent" | "error"
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+export function Contact() {
+  const [status, setStatus] = useState<Status>("idle")
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const form = new FormData(event.currentTarget)
-    const subject = encodeURIComponent(`Pedido de orçamento — ${form.get("name") ?? ""}`)
-    const body = encodeURIComponent(String(form.get("message") ?? ""))
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
-    setSent(true)
+    const form = event.currentTarget
+    const data = new FormData(form)
+    setStatus("sending")
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          message: data.get("message"),
+          // Honeypot: real visitors never see or fill this field (see the
+          // hidden input below) — the API silently drops the submission if
+          // it comes back non-empty.
+          website: data.get("website"),
+        }),
+      })
+
+      if (!res.ok) throw new Error(await res.text())
+
+      setStatus("sent")
+      form.reset()
+    } catch {
+      setStatus("error")
+    }
   }
 
   return (
@@ -97,18 +119,36 @@ export function Contact() {
               />
             </div>
 
+            {/* Honeypot — hidden from real visitors via CSS, not "type=hidden"
+                (bots fill hidden-type fields less reliably than ones merely
+                positioned off-screen). Never remove the name/tabIndex combo. */}
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 border-[3px] border-ink bg-lime px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-ink shadow-brutal-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal"
+              disabled={status === "sending"}
+              className="inline-flex items-center justify-center gap-2 border-[3px] border-ink bg-lime px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-ink shadow-brutal-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-brutal-sm"
             >
-              Enviar mensagem
+              {status === "sending" ? "A enviar…" : "Enviar mensagem"}
               <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
             </button>
 
             <p role="status" className="text-sm text-ink/60">
-              {sent
-                ? "A abrir o seu email para concluir o envio…"
-                : "Ao enviar, abrimos o seu cliente de email com a mensagem pronta."}
+              {status === "sent" && "Mensagem enviada — entramos em contacto em breve."}
+              {status === "error" && (
+                <>
+                  Não foi possível enviar agora. Tenta de novo ou escreve para{" "}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
+                    {CONTACT_EMAIL}
+                  </a>
+                  .
+                </>
+              )}
+              {(status === "idle" || status === "sending") &&
+                "A equipa Vektra responde normalmente dentro de 1 dia útil."}
             </p>
           </div>
         </form>

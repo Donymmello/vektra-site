@@ -7,48 +7,102 @@ duras) sobre a paleta de marca (azul marinho, ciano, verde-lima).
 
 ## Stack
 
+**Frontend**
 - **Vite** + **React 19** + **TypeScript**
 - **Tailwind CSS v4** (tokens de marca em `src/index.css`, via `@theme`)
 - **three.js** + **@react-three/fiber** para a cena 3D do hero (carregada via
   `React.lazy` para não pesar no bundle inicial)
 
+**Backend** (pasta `server/`, projeto Node à parte)
+- **Express** + **TypeScript**, trata o formulário de contacto: valida,
+  guarda o pedido numa base de dados **SQLite** e envia o email por SMTP.
+- Sem base de dados/servidor externos a gerir — o ficheiro `.db` fica num
+  volume Docker, e o servidor é um único processo Node.
+
 ## Começar
+
+Frontend:
 
 ```bash
 npm install
-npm run dev       # servidor de desenvolvimento
+npm run dev       # servidor de desenvolvimento (http://localhost:5173)
 npm run build     # build de produção em dist/
 npm run preview   # pré-visualizar o build de produção
 ```
+
+Backend (noutro terminal, para o formulário de contacto funcionar em dev):
+
+```bash
+cd server
+cp .env.example .env   # opcional — sem isto, simula o envio de email
+npm install
+npm run dev             # http://localhost:3001, reinicia sozinho ao editar
+```
+
+Ou os dois de uma vez, dentro de Docker: `docker compose -f docker-compose.dev.yml up`
+(ver secção "Docker" abaixo).
 
 ## Estrutura
 
 ```
 src/
-  components/   Navbar, Hero, HeroScene (3D), Services, ValueProps, Contact, Footer, Logo, icons
-  data/         services.ts — conteúdo dos 5 serviços (editar aqui para atualizar textos)
+  components/   Navbar, Hero, HeroScene (3D), Services, Products, Mission,
+                Sectors, Contact, ValueProps, Footer, Logo, icons
+  data/         services.ts, products.ts — conteúdo editável (textos, bullets)
   hooks/        usePrefersReducedMotion.ts
   index.css     tokens de marca (cores, sombras, fontes) e utilitários neobrutalistas
+
+server/
+  src/
+    index.ts        arranque do Express, CORS, rotas
+    db.ts            SQLite — tabela contact_submissions
+    mailer.ts        envio do email via SMTP (nodemailer)
+    rateLimit.ts     limite simples de pedidos por IP
+    routes/contact.ts  validação + honeypot anti-spam
 ```
 
 ## Antes de publicar
 
-- [ ] Substituir `CONTACT_EMAIL` em `src/components/Contact.tsx` pelo email real, ou
-      ligar o formulário a um endpoint/serviço (ex: Formspree, uma API route).
-- [ ] Confirmar o domínio `vektratechnologies.com` e atualizar links se necessário.
+- [ ] Configurar `server/.env` com o SMTP real (ver `server/.env.example`) —
+      sem isto o formulário guarda o pedido mas não envia o email.
+- [ ] Confirmar o domínio `vektratechnologies.com` e atualizar links,
+      `index.html` (og:url, canonical) e `CORS_ORIGIN` se necessário.
 - [ ] Substituir o ícone/wordmark em `src/components/Logo.tsx` se o logótipo
       final (Canva) for diferente do mark atual.
-- [ ] Adicionar analytics/SEO (meta tags adicionais, sitemap) conforme necessário.
+- [ ] Adicionar analytics conforme necessário (SEO/meta tags já feitos).
 
-## Docker (teste local, já sem precisar de domínio)
+## Docker
+
+Há dois modos, para dois objetivos diferentes:
+
+**Desenvolvimento (hot reload, sem build manual)** — para o dia a dia, quando
+estás a editar código e queres ver o resultado logo no browser:
+
+```bash
+docker compose -f docker-compose.dev.yml up
+# abrir http://localhost:5173
+```
+
+Isto sobe o site **e** a API (o formulário de contacto já funciona). Cada
+alteração a um ficheiro em `src/` ou `server/src/` atualiza sozinha — o
+frontend no browser, a API reiniciando-se — tal como `npm run dev` normal,
+mas sem precisares de ter o Node instalado na máquina. Não precisa (nem deve)
+de `--build`: são os mesmos containers sempre, só o código dentro do volume é
+que muda.
+
+**Teste do build de produção** — para validar o mesmo `Dockerfile`/build que
+mais tarde corre na VPS, antes de publicar:
 
 ```bash
 docker compose -f docker-compose.local.yml up --build
 # abrir http://localhost:8080
 ```
 
-Isto valida o mesmo `Dockerfile`/build que mais tarde corre na VPS. O
-`docker-compose.yml` (com Caddy + HTTPS automático) fica pronto para quando
+Este modo compila o site para ficheiros estáticos e serve-os via Nginx — por
+isso, ao contrário do modo de desenvolvimento, cada alteração exige mesmo
+`--build` de novo (é serve o resultado final, não código a correr ao vivo).
+
+O `docker-compose.yml` (com Caddy + HTTPS automático) fica pronto para quando
 houver domínio + VPS — ver `DEPLOY.md` para o guia completo.
 
 ## Performance

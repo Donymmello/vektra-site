@@ -1,0 +1,54 @@
+# Development mode — runs Vite's own dev server (hot reload) inside Docker,
+# so editing a file updates the browser immediately, no build/restart needed.
+#
+# This is different from docker-compose.local.yml, which builds the production
+# bundle and serves it via Nginx (use that one to validate the real build
+# before shipping — it does need a rebuild after every change, by design).
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up
+#   open http://localhost:5173
+#   edit any file in src/ — the browser updates on its own
+services:
+  site:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    environment:
+      # File-change events from a Windows/macOS bind mount don't always reach
+      # Vite's watcher reliably through Docker Desktop — polling is slower
+      # but never misses a save.
+      - CHOKIDAR_USEPOLLING=true
+      # Inside Docker, "api" resolves via Compose's DNS — see vite.config.ts.
+      - VITE_API_PROXY_TARGET=http://api:3001
+    depends_on:
+      - api
+
+  # Same hot-reload idea for the backend: edit anything in server/src and
+  # tsx restarts the process on its own, no rebuild.
+  api:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./server:/app
+      - api_node_modules:/app/node_modules
+      - api_data:/app/data
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3001:3001"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CORS_ORIGIN=http://localhost:5173
+    env_file:
+      - path: ./server/.env
+        required: false
+
+volumes:
+  node_modules:
+  api_node_modules:
+  api_data:

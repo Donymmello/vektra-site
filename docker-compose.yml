@@ -3,9 +3,27 @@ services:
     build: .
     image: vektra-site:latest
     restart: unless-stopped
-    networks: [web]
-    # No published ports: only reachable from other containers on the
-    # shared `web` network (i.e. the `caddy` edge proxy below).
+    # `web` for Caddy to reach it; `internal` (private to this stack) to
+    # reach `api` — `api` itself never joins `web`, so it stays invisible to
+    # whatever other service stacks share that network on the VPS later.
+    networks: [web, internal]
+    depends_on:
+      - api
+
+  api:
+    build: ./server
+    image: vektra-site-api:latest
+    restart: unless-stopped
+    env_file:
+      - path: ./server/.env
+        required: false
+    environment:
+      CORS_ORIGIN: https://${DOMAIN:-vektratechnologies.com}
+    networks: [internal]
+    # No published ports: only `site`'s Nginx (proxy_pass in nginx.conf)
+    # talks to this, over the private `internal` network above.
+    volumes:
+      - api_data:/app/data
 
   caddy:
     image: caddy:2-alpine
@@ -24,14 +42,18 @@ services:
     depends_on:
       - site
 
-# Shared, pre-created network — see DEPLOY.md. Keeping it `external` lets
+# `web` is shared, pre-created — see DEPLOY.md. Keeping it `external` lets
 # other service stacks on the same VPS join `web` and be proxied by this
 # same Caddy instance later, without touching this compose file.
+# `internal` is private to this stack (created automatically by Compose,
+# scoped to the vektra-site project) — api is never reachable from `web`.
 networks:
   web:
     name: web
     external: true
+  internal:
 
 volumes:
   caddy_data:
   caddy_config:
+  api_data:

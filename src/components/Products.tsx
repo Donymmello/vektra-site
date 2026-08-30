@@ -14,7 +14,7 @@ export function Products() {
               Sistemas próprios, feitos para o seu negócio.
             </h2>
             <p className="mt-4 max-w-xl text-white/70">
-              Além de serviços à medida, desenvolvemos e mantemos os nossos próprios sistemas —
+              Além de serviços à medida, desenvolvemos e mantemos os nossos próprios sistemas,
               prontos a adaptar à sua operação.
             </p>
           </div>

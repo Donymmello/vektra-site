@@ -45,7 +45,7 @@ function generateField() {
 
 function NetworkField({ interactive }: { interactive: boolean }) {
   const group = useRef<THREE.Group>(null)
-  const { nodes, linkPositions } = useMemo(generateField, [])
+  const { nodes, linkPositions } = useMemo(() => generateField(), [])
 
   useFrame((state, delta) => {
     if (!group.current) return
