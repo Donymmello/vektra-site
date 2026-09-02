@@ -1,17 +1,17 @@
-# Docker: testar localmente e (mais tarde) publicar na VPS
+# Docker: testar localmente e publicar na VPS
 
-Ainda não há domínio nem VPS comprados — por agora isto corre só na sua
-máquina, em `http://localhost`. Há três ficheiros compose:
+Domínio e VPS já estão prontos: `vektramz.com`, servidor Debian 13. Há três
+ficheiros compose, cada um para um objetivo diferente:
 
 - **`docker-compose.dev.yml`** — para o dia a dia de desenvolvimento
   (hot-reload, site + api). Ver `README.md`.
 - **`docker-compose.local.yml`** — para validar o **build de produção**
-  antes de publicar. Site + api em HTTP simples, em portas locais. Sem
-  domínio, sem HTTPS, sem rede partilhada.
-- **`docker-compose.yml`** — para quando tiver domínio + VPS (secção
-  "Publicar na VPS" mais abaixo). Inclui o Caddy com HTTPS automático.
+  localmente antes de publicar. Site + api em HTTP simples, em portas
+  locais. Sem domínio, sem HTTPS, sem rede partilhada.
+- **`docker-compose.yml`** — o que corre na VPS (secção "Publicar na VPS"
+  abaixo). Inclui o Caddy com HTTPS automático.
 
-## Testar localmente (agora)
+## Testar localmente (antes de publicar)
 
 ```bash
 cp server/.env.example server/.env   # opcional — sem isto, o formulário
@@ -21,8 +21,8 @@ docker compose -f docker-compose.local.yml up --build
 ```
 
 Abra **http://localhost:8080**. `Ctrl+C` para parar. Isto usa o mesmo
-`Dockerfile` (site e api) que vai correr na VPS mais tarde — é a forma de
-confirmar que o build, o Nginx e a API funcionam antes de haver domínio.
+`Dockerfile` (site e api) que vai correr na VPS — é a forma de confirmar que
+o build, o Nginx e a API funcionam antes de tocar no servidor real.
 
 (Nota: para o dia a dia de desenvolvimento — com hot-reload — use
 `docker compose -f docker-compose.dev.yml up` ou `npm run dev`, como no
@@ -31,9 +31,9 @@ não para editar o código.)
 
 ---
 
-## Publicar na VPS (mais tarde)
+## Publicar na VPS
 
-Quando tiver domínio + VPS, este projeto corre em três containers:
+O projeto corre em três containers:
 
 - **`site`** — build de produção do Vite, servido por Nginx (sem porta pública).
   O Nginx também encaminha `/api/*` para o container `api` (ver `nginx.conf`).
@@ -41,39 +41,94 @@ Quando tiver domínio + VPS, este projeto corre em três containers:
   (envia o email e guarda cada pedido numa base de dados SQLite, num volume
   persistente). Nunca fica exposto diretamente — só o `site` fala com ele.
 - **`caddy`** — proxy de borda com HTTPS automático (Let's Encrypt), que
-  encaminha `vektratechnologies.com` para o container `site`.
-
-Antes do primeiro arranque, configure o email de envio:
-
-```bash
-cp server/.env.example server/.env
-# editar server/.env — SMTP_HOST, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
-```
-
-Sem isto, o site continua a funcionar normalmente — cada pedido de orçamento
-fica guardado na base de dados, só não é enviado por email até configurar o
-SMTP.
+  encaminha `vektramz.com` para o container `site`.
 
 Isto foi pensado para uma VPS que também vai correr **outros serviços**: o
 Caddy fica como o único processo a ocupar as portas 80/443, e outros stacks
 `docker compose` podem juntar-se à mesma rede `web` mais tarde para serem
 adicionados ao mesmo Caddy (ver secção "Adicionar outro serviço" abaixo).
 
-## Pré-requisitos na VPS
+## 1. DNS
 
-- Docker + Docker Compose plugin instalados.
-- DNS: um registo A de `vektratechnologies.com` (e `www`) a apontar para o IP da VPS.
-- Portas 80 e 443 livres (nenhum outro processo/proxy já a usá-las).
+No painel do registador do domínio, aponte para o IP da VPS:
 
-## Primeira vez
+| Tipo | Nome | Valor           |
+|------|------|-----------------|
+| A    | @    | `<IP da VPS>`   |
+| A    | www  | `<IP da VPS>`   |
+
+A propagação costuma levar minutos, mas pode demorar até 24h dependendo do
+registador. Pode confirmar com `dig vektramz.com +short` de qualquer
+máquina — quando devolver o IP da VPS, está propagado.
+
+## 2. Preparar a VPS (Debian 13)
+
+Ligue por SSH (`ssh root@<IP da VPS>`, ou o utilizador que tiver) e instale
+o Docker pelo repositório oficial (o `apt` do Debian já traz um `docker.io`
+mais antigo — este é o caminho recomendado pela própria Docker):
 
 ```bash
+# Dependências e chave do repositório
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Repositório (deteta a versão do Debian automaticamente)
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Instalar Docker + Compose plugin
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Confirmar
+docker compose version
+```
+
+Firewall (se usar `ufw`) — abra apenas o necessário antes de o ativar, para
+não se trancar de fora por SSH:
+
+```bash
+sudo apt install -y ufw
+sudo ufw allow OpenSSH
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+```
+
+## 3. Copiar o projeto para a VPS
+
+Sem repositório Git ainda — a forma mais simples é copiar a pasta do
+projeto diretamente do seu PC Windows para a VPS com `scp` (funciona no
+PowerShell/Terminal do Windows 10/11, já vem com o OpenSSH incluído):
+
+```powershell
+scp -r C:\Users\Dony\Documents\Workspace\vektra-site root@<IP da VPS>:/opt/vektra-site
+```
+
+(Ou, se preferir manter isto num repositório Git — GitHub/GitLab — mais
+tarde `git pull` na VPS fica mais prático para atualizar; ver secção
+"Atualizar" abaixo. Nada disto impede começar já por `scp`.)
+
+## 4. Primeiro arranque
+
+Já dentro da VPS, na pasta do projeto:
+
+```bash
+cd /opt/vektra-site
+
 # 1. Rede partilhada (só uma vez, mesmo com múltiplos serviços/stacks)
 docker network create web
 
-# 2. Configurar domínio/email
+# 2. Confirmar domínio/email — os valores por omissão já são os certos
+#    (vektramz.com), mas vale a pena copiar e confirmar:
 cp .env.example .env
-# editar .env se necessário (DOMAIN, ACME_EMAIL)
+# ACME_EMAIL é o contacto que a Let's Encrypt usa para avisos do
+# certificado — pode deixar admin@vektramz.com ou trocar pelo seu.
 
 # 3. Build + arrancar
 docker compose up -d --build
@@ -82,14 +137,31 @@ docker compose up -d --build
 docker compose logs -f caddy
 ```
 
-O site fica acessível em `https://vektratechnologies.com` assim que o DNS
-propagar e o Caddy obtiver o certificado (normalmente segundos a poucos
-minutos).
+O site fica acessível em `https://vektramz.com` assim que o DNS propagar e
+o Caddy obtiver o certificado (normalmente segundos a poucos minutos depois
+do DNS já apontar certo).
+
+**Sobre o email do formulário de contacto:** ainda não há SMTP configurado
+— e não é preciso para lançar. Sem `server/.env`, cada pedido de orçamento
+fica guardado na base de dados (dá para consultar depois), só não é
+enviado por email. Quando tiver um serviço de email pronto (Gmail com
+password de app, Resend, Mailgun, ou o email profissional
+`@vektramz.com`), basta:
+
+```bash
+cp server/.env.example server/.env
+nano server/.env   # preencher SMTP_HOST, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
+docker compose up -d api   # reinicia só a api, sem afetar o site
+```
 
 ## Atualizar depois de alterações no código
 
 ```bash
-git pull   # ou rsync dos ficheiros atualizados
+# se copiou por scp: repita o scp e depois
+docker compose up -d --build site
+
+# se estiver em Git:
+git pull
 docker compose up -d --build site
 ```
 
@@ -129,5 +201,5 @@ com sintaxe e configuração corretas — `docker compose config` resolve sem
 erros), mas este sandbox não tem acesso ao Docker Hub para descarregar as
 imagens base (`node`, `nginx`, `caddy`), por isso o `docker build` completo
 só pôde ser testado na estrutura, não executado até ao fim. Vale a pena
-correr `docker compose up -d --build` uma primeira vez na VPS e confirmar
-que tudo sobe como esperado.
+correr `docker compose up -d --build` na VPS e confirmar que tudo sobe como
+esperado — se algo falhar, `docker compose logs` mostra o motivo.

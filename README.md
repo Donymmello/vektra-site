@@ -63,12 +63,14 @@ server/
 
 ## Antes de publicar
 
+- [x] Domínio confirmado: `vektramz.com` — já propagado no `index.html`
+      (og:url, canonical), `docker-compose.yml` e `Caddyfile`.
+- [x] Logo/ícone final aplicado em `src/components/Logo.tsx`.
+- [ ] Apontar o DNS (registo A de `vektramz.com` e `www`) para o IP da VPS —
+      ver `DEPLOY.md`.
 - [ ] Configurar `server/.env` com o SMTP real (ver `server/.env.example`) —
-      sem isto o formulário guarda o pedido mas não envia o email.
-- [ ] Confirmar o domínio `vektratechnologies.com` e atualizar links,
-      `index.html` (og:url, canonical) e `CORS_ORIGIN` se necessário.
-- [ ] Substituir o ícone/wordmark em `src/components/Logo.tsx` se o logótipo
-      final (Canva) for diferente do mark atual.
+      sem isto o formulário guarda o pedido mas não envia o email (lança-se
+      normalmente assim, dá para ligar depois).
 - [ ] Adicionar analytics conforme necessário (SEO/meta tags já feitos).
 
 ## Docker

@@ -18,7 +18,7 @@ services:
       - path: ./server/.env
         required: false
     environment:
-      CORS_ORIGIN: https://${DOMAIN:-vektratechnologies.com}
+      CORS_ORIGIN: https://${DOMAIN:-vektramz.com}
     networks: [internal]
     # No published ports: only `site`'s Nginx (proxy_pass in nginx.conf)
     # talks to this, over the private `internal` network above.
@@ -32,8 +32,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      DOMAIN: ${DOMAIN:-vektratechnologies.com}
-      ACME_EMAIL: ${ACME_EMAIL:-admin@vektratechnologies.com}
+      DOMAIN: ${DOMAIN:-vektramz.com}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@vektramz.com}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

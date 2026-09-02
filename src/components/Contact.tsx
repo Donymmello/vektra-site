@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from "react"
 import { ArrowRightIcon, MailIcon, GlobeIcon } from "./icons"
 
-const CONTACT_EMAIL = "contacto@vektratechnologies.com"
+const CONTACT_EMAIL = "contacto@vektramz.com"
 
 type Status = "idle" | "sending" | "sent" | "error"
 
@@ -66,8 +66,8 @@ export function Contact() {
               <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center border-[3px] border-ink bg-white">
                 <GlobeIcon className="h-5 w-5" aria-hidden="true" />
               </span>
-              <a href="https://vektratechnologies.com" className="font-medium hover:text-cyan-deep">
-                vektratechnologies.com
+              <a href="https://vektramz.com" className="font-medium hover:text-cyan-deep">
+                vektramz.com
               </a>
             </li>
           </ul>
