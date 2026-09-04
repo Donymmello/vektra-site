@@ -2,6 +2,11 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+# Baked into the built JS by Vite at compile time (see src/lib/consent.ts).
+# Empty by default: GA stays disabled, the cookie banner still works fine.
+ARG VITE_GA_MEASUREMENT_ID
+ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
+
 COPY package.json package-lock.json ./
 RUN npm ci
 

@@ -74,8 +74,29 @@ server/
 - [ ] Configurar `server/.env` com o SMTP real (ver `server/.env.example`):
       sem isto o formulário guarda o pedido mas não envia o email (lança-se
       normalmente assim, dá para ligar depois).
-- [ ] Adicionar analytics conforme necessário (Google Search Console também
-      vale a pena registar, agora que há `sitemap.xml`).
+- [x] Google Analytics e banner de cookies prontos no código (ver secção
+      "Google Analytics" abaixo). Falta só preencher `VITE_GA_MEASUREMENT_ID`
+      no `.env` e reconstruir o `site` para ativar.
+- [ ] Google Search Console (vale a pena registar, agora que há `sitemap.xml`).
+
+## Google Analytics
+
+O código já está todo pronto (`src/lib/consent.ts`, `src/hooks/useCookieConsent.ts`,
+`src/components/CookieConsent.tsx`), só falta o Measurement ID:
+
+1. Criar/abrir a propriedade GA4 em [analytics.google.com](https://analytics.google.com),
+   copiar o Measurement ID (formato `G-XXXXXXXXXX`) em Admin → Fluxos de dados
+   → o teu fluxo web.
+2. Colar em `.env` (raiz do projeto, copiado de `.env.example`):
+   `VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX`.
+3. Reconstruir o site: `docker compose up -d --build site`.
+
+Sem o ID preenchido, o banner de cookies aparece normalmente mas o Analytics
+nunca carrega, não há nenhum pedido de rede a mais nem cookies a serem postos.
+O script do GA só é injetado depois de o visitante clicar em "Aceitar" no
+banner (ou se já tinha aceitado numa visita anterior); "Recusar" nunca o
+carrega. A escolha fica guardada no browser do visitante, e pode ser mudada
+a qualquer momento no link "Preferências de cookies" no rodapé do site.
 
 ## Docker
 
