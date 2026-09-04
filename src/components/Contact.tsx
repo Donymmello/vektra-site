@@ -23,7 +23,7 @@ export function Contact() {
           email: data.get("email"),
           message: data.get("message"),
           // Honeypot: real visitors never see or fill this field (see the
-          // hidden input below) — the API silently drops the submission if
+          // hidden input below): the API silently drops the submission if
           // it comes back non-empty.
           website: data.get("website"),
         }),
@@ -119,7 +119,7 @@ export function Contact() {
               />
             </div>
 
-            {/* Honeypot — hidden from real visitors via CSS, not "type=hidden"
+            {/* Honeypot: hidden from real visitors via CSS, not "type=hidden"
                 (bots fill hidden-type fields less reliably than ones merely
                 positioned off-screen). Never remove the name/tabIndex combo. */}
             <div className="absolute -left-[9999px]" aria-hidden="true">
@@ -137,7 +137,7 @@ export function Contact() {
             </button>
 
             <p role="status" className="text-sm text-ink/60">
-              {status === "sent" && "Mensagem enviada — entramos em contacto em breve."}
+              {status === "sent" && "Mensagem enviada. Entramos em contacto em breve."}
               {status === "error" && (
                 <>
                   Não foi possível enviar agora. Tenta de novo ou escreve para{" "}

@@ -1,4 +1,4 @@
-# Local testing only — no domain, no HTTPS, no Caddy. Just the site + api
+# Local testing only: no domain, no HTTPS, no Caddy. Just the site + api
 # containers on plain HTTP, so you can validate the same Dockerfile/build
 # that will later run on the VPS.
 #

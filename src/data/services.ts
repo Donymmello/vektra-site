@@ -1,7 +1,7 @@
 import {
   GlobeIcon,
   CodeIcon,
-  // CloudIcon, ShieldIcon — não usados enquanto Cloud & Infraestrutura e
+  // CloudIcon, ShieldIcon: não usados enquanto Cloud & Infraestrutura e
   // Cibersegurança & Redes estiverem ocultados (ver abaixo).
   ServerIcon,
 } from "../components/icons"
@@ -15,22 +15,22 @@ export type Service = {
   description: string
   bullets: string[]
   icon: ComponentType<SVGProps<SVGSVGElement>>
-  /** Bento span — some cards read as feature cells, others as compact ones. */
+  /** Bento span: some cards read as feature cells, others as compact ones. */
   span: "lg" | "md"
 }
 
 export const services: Service[] = [
   {
     id: "software",
-    title: "Desenvolvimento Web",
+    title: "Desenvolvimento de Software",
     description:
-      "Criamos sistemas robustos e escaláveis, de aplicações web a integrações via API, focados em fazer crescer o seu negócio.",
-    bullets: ["Websites & Apps", "Integrações via API", "Plataformas SaaS"],
+      "Criamos software robusto e escalável, de aplicações web a integrações via API.",
+    bullets: ["Websites & Apps", "APIs", "Plataformas SaaS"],
     icon: CodeIcon,
     span: "md",
   },
 
-  // ponytail: ocultado a pedido do cliente (2026-08-28) — reativar quando a
+  // ponytail: ocultado a pedido do cliente (2026-08-28). Reativar quando a
   // oferta de Cloud & Infraestrutura estiver pronta para ser vendida.
   // {
   //   id: "cloud",
@@ -42,7 +42,7 @@ export const services: Service[] = [
   //   span: "md",
   // },
 
-  // ponytail: ocultado a pedido do cliente (2026-08-28) — reativar quando a
+  // ponytail: ocultado a pedido do cliente (2026-08-28). Reativar quando a
   // oferta de Cibersegurança & Redes estiver pronta para ser vendida.
   // {
   //   id: "security",
@@ -73,7 +73,7 @@ export const services: Service[] = [
     title: "Aquisição de Material Informático",
     description:
       "Computadores, servidores e equipamento de rede com garantia e suporte técnico.",
-    bullets: ["Computadores & portáteis", "Redes & periféricos", "Suporte técnico", "Licenças"],
+    bullets: ["Computadores & portáteis", "Redes & periféricos", "Suporte técnico"],
     icon: ServerIcon,
     span: "md",
   },

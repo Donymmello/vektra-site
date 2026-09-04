@@ -1,14 +1,14 @@
-# Development mode — runs Vite's own dev server (hot reload) inside Docker,
+# Development mode: runs Vite's own dev server (hot reload) inside Docker,
 # so editing a file updates the browser immediately, no build/restart needed.
 #
 # This is different from docker-compose.local.yml, which builds the production
 # bundle and serves it via Nginx (use that one to validate the real build
-# before shipping — it does need a rebuild after every change, by design).
+# before shipping; it does need a rebuild after every change, by design).
 #
 # Usage:
 #   docker compose -f docker-compose.dev.yml up
 #   open http://localhost:5173
-#   edit any file in src/ — the browser updates on its own
+#   edit any file in src/ and the browser updates on its own
 services:
   site:
     image: node:20-alpine
@@ -21,10 +21,10 @@ services:
       - "5173:5173"
     environment:
       # File-change events from a Windows/macOS bind mount don't always reach
-      # Vite's watcher reliably through Docker Desktop — polling is slower
+      # Vite's watcher reliably through Docker Desktop; polling is slower
       # but never misses a save.
       - CHOKIDAR_USEPOLLING=true
-      # Inside Docker, "api" resolves via Compose's DNS — see vite.config.ts.
+      # Inside Docker, "api" resolves via Compose's DNS: see vite.config.ts.
       - VITE_API_PROXY_TARGET=http://api:3001
     depends_on:
       - api

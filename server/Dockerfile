@@ -12,7 +12,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 
-# SQLite file lives here — mount a volume on this path to persist leads
+# SQLite file lives here: mount a volume on this path to persist leads
 # across container restarts/redeploys (see docker-compose.yml).
 VOLUME /app/data
 

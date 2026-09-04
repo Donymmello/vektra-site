@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Logo } from "./Logo"
 import { MenuIcon, CloseIcon } from "./icons"
 
-// Kept short on purpose — "Porquê nós" and "Sectores" ainda existem como
+// Kept short on purpose. "Porquê nós" and "Sectores" ainda existem como
 // secções na página, só não precisam de um link próprio no topo.
 const LINKS = [
   { href: "#servicos", label: "Serviços" },

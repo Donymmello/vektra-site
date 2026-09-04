@@ -10,7 +10,7 @@ RUN npm run build
 
 # --- Runtime stage -------------------------------------------------------
 # Small, well-understood static file server. The public edge (TLS, routing
-# to other services on the VPS) is handled separately by Caddy — see
+# to other services on the VPS) is handled separately by Caddy: see
 # docker-compose.yml and DEPLOY.md.
 FROM nginx:1.27-alpine AS runtime
 

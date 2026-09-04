@@ -31,8 +31,24 @@ export function Products() {
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {products.map((product) => {
             const Icon = product.icon
+            // Every product follows the same rule: once it has a live `url`
+            // in src/data/products.ts, its card becomes clickable and opens
+            // that subdomain. Until then it stays a plain, non-linked panel.
+            const Wrapper = product.url ? "a" : "article"
+            const linkProps = product.url
+              ? { href: product.url, target: "_blank", rel: "noopener noreferrer" }
+              : {}
+
             return (
-              <article key={product.id} className="bento-card flex flex-col p-7">
+              <Wrapper
+                key={product.id}
+                {...linkProps}
+                className={`bento-card flex flex-col p-7 ${
+                  product.url
+                    ? "transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-cyan"
+                    : ""
+                }`}
+              >
                 <div className="flex items-start justify-between gap-3">
                   <div className="inline-flex h-12 w-12 items-center justify-center border-[3px] border-ink bg-lime text-ink">
                     <Icon className="h-6 w-6" aria-hidden="true" />
@@ -59,7 +75,14 @@ export function Products() {
                     </li>
                   ))}
                 </ul>
-              </article>
+
+                {product.url && (
+                  <p className="mt-6 inline-flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-cyan-deep">
+                    Aceder ao sistema
+                    <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+                  </p>
+                )}
+              </Wrapper>
             )
           })}
         </div>

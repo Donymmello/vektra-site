@@ -7,7 +7,7 @@ type LogoProps = {
   className?: string
 }
 
-/** Vektra "V" mark — the approved brand icon (cyan → navy gradient chevron). */
+/** Vektra "V" mark: the approved brand icon (cyan to navy gradient chevron). */
 export function Logo({ variant = "light", showWordmark = true, className = "" }: LogoProps) {
   const wordmarkColor = variant === "dark" ? "text-white" : "text-ink"
   const subColor = variant === "dark" ? "text-cyan-soft/80" : "text-ink/60"

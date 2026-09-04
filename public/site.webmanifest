@@ -1,0 +1,13 @@
+{
+  "name": "Vektra Technologies MZ",
+  "short_name": "Vektra",
+  "description": "Soluções completas em tecnologia em Moçambique: software, cloud, domínios, hosting e equipamento informático.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1a3a",
+  "theme_color": "#0b1a3a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

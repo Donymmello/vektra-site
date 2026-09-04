@@ -1,4 +1,4 @@
-# Vektra Technologies MZ — Website
+# Vektra Technologies MZ: Website
 
 Landing page em React (Vite + TypeScript + Tailwind CSS v4) para a Vektra
 Technologies MZ, com hero 3D imersivo (Three.js / React Three Fiber), secção
@@ -16,7 +16,7 @@ duras) sobre a paleta de marca (azul marinho, ciano, verde-lima).
 **Backend** (pasta `server/`, projeto Node à parte)
 - **Express** + **TypeScript**, trata o formulário de contacto: valida,
   guarda o pedido numa base de dados **SQLite** e envia o email por SMTP.
-- Sem base de dados/servidor externos a gerir — o ficheiro `.db` fica num
+- Sem base de dados/servidor externos a gerir: o ficheiro `.db` fica num
   volume Docker, e o servidor é um único processo Node.
 
 ## Começar
@@ -34,7 +34,7 @@ Backend (noutro terminal, para o formulário de contacto funcionar em dev):
 
 ```bash
 cd server
-cp .env.example .env   # opcional — sem isto, simula o envio de email
+cp .env.example .env   # opcional: sem isto, simula o envio de email
 npm install
 npm run dev             # http://localhost:3001, reinicia sozinho ao editar
 ```
@@ -48,14 +48,14 @@ Ou os dois de uma vez, dentro de Docker: `docker compose -f docker-compose.dev.y
 src/
   components/   Navbar, Hero, HeroScene (3D), Services, Products, Mission,
                 Sectors, Contact, ValueProps, Footer, Logo, icons
-  data/         services.ts, products.ts — conteúdo editável (textos, bullets)
+  data/         services.ts, products.ts: conteúdo editável (textos, bullets)
   hooks/        usePrefersReducedMotion.ts
   index.css     tokens de marca (cores, sombras, fontes) e utilitários neobrutalistas
 
 server/
   src/
     index.ts        arranque do Express, CORS, rotas
-    db.ts            SQLite — tabela contact_submissions
+    db.ts            SQLite: tabela contact_submissions
     mailer.ts        envio do email via SMTP (nodemailer)
     rateLimit.ts     limite simples de pedidos por IP
     routes/contact.ts  validação + honeypot anti-spam
@@ -63,21 +63,25 @@ server/
 
 ## Antes de publicar
 
-- [x] Domínio confirmado: `vektramz.com` — já propagado no `index.html`
+- [x] Domínio confirmado (`vektramz.com`), já propagado no `index.html`
       (og:url, canonical), `docker-compose.yml` e `Caddyfile`.
 - [x] Logo/ícone final aplicado em `src/components/Logo.tsx`.
-- [ ] Apontar o DNS (registo A de `vektramz.com` e `www`) para o IP da VPS —
-      ver `DEPLOY.md`.
-- [ ] Configurar `server/.env` com o SMTP real (ver `server/.env.example`) —
+- [x] DNS apontado (registo A de `vektramz.com` e `www`) para o IP da VPS,
+      site já no ar.
+- [x] SEO organizado: favicon/apple-touch-icon com o logo real, `robots.txt`,
+      `sitemap.xml`, `site.webmanifest`, dados estruturados (JSON-LD) e
+      `og-image.png` atualizada: tudo em `public/` e `index.html`.
+- [ ] Configurar `server/.env` com o SMTP real (ver `server/.env.example`):
       sem isto o formulário guarda o pedido mas não envia o email (lança-se
       normalmente assim, dá para ligar depois).
-- [ ] Adicionar analytics conforme necessário (SEO/meta tags já feitos).
+- [ ] Adicionar analytics conforme necessário (Google Search Console também
+      vale a pena registar, agora que há `sitemap.xml`).
 
 ## Docker
 
 Há dois modos, para dois objetivos diferentes:
 
-**Desenvolvimento (hot reload, sem build manual)** — para o dia a dia, quando
+**Desenvolvimento (hot reload, sem build manual)**: para o dia a dia, quando
 estás a editar código e queres ver o resultado logo no browser:
 
 ```bash
@@ -86,13 +90,13 @@ docker compose -f docker-compose.dev.yml up
 ```
 
 Isto sobe o site **e** a API (o formulário de contacto já funciona). Cada
-alteração a um ficheiro em `src/` ou `server/src/` atualiza sozinha — o
-frontend no browser, a API reiniciando-se — tal como `npm run dev` normal,
+alteração a um ficheiro em `src/` ou `server/src/` atualiza sozinha: o
+frontend no browser, a API reiniciando-se: tal como `npm run dev` normal,
 mas sem precisares de ter o Node instalado na máquina. Não precisa (nem deve)
 de `--build`: são os mesmos containers sempre, só o código dentro do volume é
 que muda.
 
-**Teste do build de produção** — para validar o mesmo `Dockerfile`/build que
+**Teste do build de produção**: para validar o mesmo `Dockerfile`/build que
 mais tarde corre na VPS, antes de publicar:
 
 ```bash
@@ -100,12 +104,12 @@ docker compose -f docker-compose.local.yml up --build
 # abrir http://localhost:8080
 ```
 
-Este modo compila o site para ficheiros estáticos e serve-os via Nginx — por
+Este modo compila o site para ficheiros estáticos e serve-os via Nginx: por
 isso, ao contrário do modo de desenvolvimento, cada alteração exige mesmo
 `--build` de novo (é serve o resultado final, não código a correr ao vivo).
 
 O `docker-compose.yml` (com Caddy + HTTPS automático) fica pronto para quando
-houver domínio + VPS — ver `DEPLOY.md` para o guia completo.
+houver domínio + VPS: ver `DEPLOY.md` para o guia completo.
 
 ## Performance
 

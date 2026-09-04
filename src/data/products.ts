@@ -10,6 +10,12 @@ export type Product = {
   description: string
   bullets: string[]
   icon: ComponentType<SVGProps<SVGSVGElement>>
+  /**
+   * Live subdomain for this product (e.g. https://kuava.vektramz.com).
+   * Only set once the product has actually launched; omit it and the card
+   * renders as a plain, non-clickable panel until the link is added.
+   */
+  url?: string
 }
 
 export const products: Product[] = [
@@ -31,6 +37,7 @@ export const products: Product[] = [
       "Sistema de ponto de venda rápido e fiável para retalho e restauração, com stock em tempo real.",
     bullets: ["Vendas & faturação", "Gestão de stock", "Relatórios em tempo real"],
     icon: PosIcon,
+    url: "https://kuava.vektramz.com",
   },
   {
     id: "sgp-vektra",
