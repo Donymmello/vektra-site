@@ -20,13 +20,15 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: "sgc-vektra",
-    name: "SGC-Vektra",
+    id: "tshemba",
+    name: "Tshemba",
+    brandNote: "Por Vektra Technologies",
     category: "Gestão de Crédito",
     description:
       "Gestão de todo o ciclo de crédito, da proposta à cobrança, com controlo de risco integrado.",
     bullets: ["Propostas & aprovações", "Amortizações e cobranças", "Relatórios de risco"],
     icon: CreditCardIcon,
+    url: "https://tshemba.vektramz.com",
   },
   {
     id: "kuava-pos",
