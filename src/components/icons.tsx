@@ -111,6 +111,25 @@ export function PhoneIcon(props: IconProps) {
   )
 }
 
+export function LinkedInIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M7.5 10v7M7.5 7.2v.01M12 17v-4.5c0-1.4 1-2.5 2.5-2.5s2.5 1.1 2.5 2.5V17" />
+    </svg>
+  )
+}
+
+export function InstagramIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M17 6.5v.01" />
+    </svg>
+  )
+}
+
 export function CreditCardIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
