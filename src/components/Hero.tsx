@@ -1,8 +1,9 @@
 import { Suspense, lazy } from "react"
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion"
 
-// Code-split: three.js + fiber only load once the hero mounts, instead of
-// blocking the initial bundle for a page that renders text first.
+// Still code-split, even though HeroScene is now plain Canvas2D (no three.js):
+// the network field is decorative, so it can wait until after the page's
+// actual text and layout are ready instead of sharing the initial bundle.
 const HeroScene = lazy(() => import("./HeroScene"))
 
 export function Hero() {
@@ -33,7 +34,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-white/75">
-            Desenvolvimento web, hospedagem de domínios e equipamento
+            Desenvolvimento de software, cloud, cibersegurança, domínios e equipamento
             informático, tudo com um único parceiro tecnológico, em Moçambique.
           </p>
 

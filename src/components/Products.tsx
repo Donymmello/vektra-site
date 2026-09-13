@@ -50,7 +50,11 @@ export function Products() {
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="inline-flex h-12 w-12 items-center justify-center border-[3px] border-ink bg-lime text-ink">
+                  <div
+                    className={`inline-flex h-12 w-12 items-center justify-center border-[3px] border-ink text-ink ${
+                      product.url ? "bg-lime" : "bg-paper-dim"
+                    }`}
+                  >
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <span className="mt-1 font-display text-[11px] font-bold uppercase tracking-[0.15em] text-cyan-deep">
@@ -76,10 +80,14 @@ export function Products() {
                   ))}
                 </ul>
 
-                {product.url && (
+                {product.url ? (
                   <p className="mt-6 inline-flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-cyan-deep">
                     Aceder ao sistema
                     <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+                  </p>
+                ) : (
+                  <p className="mt-6 inline-flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-ink/40">
+                    Brevemente
                   </p>
                 )}
               </Wrapper>

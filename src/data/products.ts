@@ -13,7 +13,8 @@ export type Product = {
   /**
    * Live subdomain for this product (e.g. https://kuava.vektramz.com).
    * Only set once the product has actually launched; omit it and the card
-   * renders as a plain, non-clickable panel until the link is added.
+   * renders as a plain panel with a muted "Brevemente" badge instead of a
+   * link, until the URL is added.
    */
   url?: string
 }
