@@ -34,7 +34,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-white/75">
-            Desenvolvimento de software, cloud, cibersegurança, domínios e equipamento
+            Desenvolvimento de software, cloud, domínios e equipamento
             informático, tudo com um único parceiro tecnológico, em Moçambique.
           </p>
 
