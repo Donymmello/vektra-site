@@ -1,7 +1,9 @@
 import { type FormEvent, useState } from "react"
-import { ArrowRightIcon, MailIcon, GlobeIcon } from "./icons"
+import { ArrowRightIcon, MailIcon, GlobeIcon, PhoneIcon } from "./icons"
 
 const CONTACT_EMAIL = "contacto@vektramz.com"
+const CONTACT_PHONE = "+258 86 916 4456"
+const CONTACT_PHONE_HREF = "+258869164456"
 
 type Status = "idle" | "sending" | "sent" | "error"
 
@@ -60,6 +62,14 @@ export function Contact() {
               </span>
               <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium hover:text-cyan-deep">
                 {CONTACT_EMAIL}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center border-[3px] border-ink bg-white">
+                <PhoneIcon className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <a href={`tel:${CONTACT_PHONE_HREF}`} className="font-medium hover:text-cyan-deep">
+                {CONTACT_PHONE}
               </a>
             </li>
             <li className="flex items-center gap-3">
