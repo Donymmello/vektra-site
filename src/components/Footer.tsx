@@ -10,25 +10,26 @@ export function Footer() {
   const { openPrompt } = useCookieConsent()
 
   return (
-    <footer className="border-t-[3px] border-ink bg-navy-deep py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 text-center sm:flex-row sm:justify-between sm:px-6 sm:text-left">
-        <Logo variant="dark" />
-        <div className="flex flex-col items-center gap-4 text-sm text-white/50 sm:flex-row">
-          <p>© {year} Vektra Technologies MZ. Todos os direitos reservados.</p>
+    <footer className="border-t border-line py-12">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 text-center sm:flex-row sm:justify-between sm:px-6 sm:text-left">
+        <Logo />
+
+        <div className="flex flex-col items-center gap-5 text-sm text-text-mute sm:flex-row sm:gap-7">
+          <p>© {year} Vektra Technologies MZ</p>
           <button
             type="button"
             onClick={openPrompt}
-            className="underline underline-offset-2 hover:text-white"
+            className="inline-flex min-h-11 items-center text-text-mute transition-colors duration-200 hover:text-text"
           >
             Preferências de cookies
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <a
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Vektra Technologies MZ no LinkedIn"
-              className="inline-flex h-9 w-9 items-center justify-center border-[3px] border-white/20 text-white/70 transition-colors hover:border-cyan hover:text-cyan"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-control text-text-mute transition-colors duration-200 hover:bg-surface hover:text-text"
             >
               <LinkedInIcon className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -37,7 +38,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Vektra Technologies MZ no Instagram"
-              className="inline-flex h-9 w-9 items-center justify-center border-[3px] border-white/20 text-white/70 transition-colors hover:border-cyan hover:text-cyan"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-control text-text-mute transition-colors duration-200 hover:bg-surface hover:text-text"
             >
               <InstagramIcon className="h-4 w-4" aria-hidden="true" />
             </a>

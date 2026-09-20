@@ -2,39 +2,37 @@ const PROPS = [
   {
     title: "Suporte 24/7",
     description: "Equipa disponível sempre que a sua operação precisar.",
-    accent: "bg-cyan",
   },
   {
     title: "Cloud-native",
     description: "Infraestrutura moderna, escalável e pronta para crescer consigo.",
-    accent: "bg-lime",
   },
   {
     title: "Segurança em primeiro lugar",
     description: "Boas práticas de cibersegurança aplicadas em cada projeto.",
-    accent: "bg-cyan",
   },
   {
     title: "Equipa local",
     description: "Presença e suporte técnico em Moçambique, no seu fuso horário.",
-    accent: "bg-lime",
   },
 ]
 
 export function ValueProps() {
   return (
-    <section id="porque-nos" className="border-b-[3px] border-ink bg-navy py-20 sm:py-24">
+    <section id="porque-nos" className="border-t border-line py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="font-display text-sm font-bold uppercase tracking-[0.2em] text-cyan">
-          Porquê a Vektra
-        </p>
+        {/* An h2, not a styled <p>: this was the only section whose eyebrow
+            wasn't backed by a real heading, so the outline jumped h1 -> h3. */}
+        <h2 className="eyebrow">Porquê a Vektra</h2>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {/* A single-pixel gap over a hairline-coloured backdrop gives one
+              continuous divider grid instead of four detached boxes: fewer
+              edges on screen, which is most of what reads as "considered". */}
           {PROPS.map((item) => (
-            <div key={item.title} className="border-[3px] border-white/15 bg-navy-deep p-6">
-              <div className={`h-1.5 w-10 ${item.accent}`} aria-hidden="true" />
-              <h3 className="mt-4 font-display text-lg font-bold text-white">{item.title}</h3>
-              <p className="mt-2 text-sm text-white/65">{item.description}</p>
+            <div key={item.title} className="bg-surface p-6 sm:p-7">
+              <h3 className="text-title text-[15px] font-semibold text-text">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-text-mute">{item.description}</p>
             </div>
           ))}
         </div>

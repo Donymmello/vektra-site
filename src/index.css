@@ -1,24 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  /* One family, not two. The old Space Grotesk + Inter split cost an extra
+     font request and read as "agency", where this tier of product site tends
+     to run a single grotesk across every size and separate the hierarchy with
+     weight and tracking instead. */
+  --font-display: "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
 
-  /* Brand */
-  --color-ink: #0a1220;
-  --color-navy: #0b1a3a;
-  --color-navy-deep: #060d21;
-  --color-paper: #f6f4ee;
-  --color-paper-dim: #ece8dc;
-  --color-cyan: #33c7ff;
-  --color-cyan-deep: #0a86c2;
-  --color-cyan-soft: #bdeeff;
-  --color-lime: #cbff4d;
+  /* Surfaces. Never pure black: #000 smears on OLED and kills the sense of
+     depth that separates a card from its background. */
+  --color-bg: #0a0f1a;
+  --color-surface: #111827;
+  --color-surface-2: #161f2e;
 
-  --shadow-brutal-sm: 4px 4px 0 0 var(--color-ink);
-  --shadow-brutal: 8px 8px 0 0 var(--color-ink);
-  --shadow-brutal-lg: 12px 12px 0 0 var(--color-ink);
-  --shadow-brutal-cyan: 8px 8px 0 0 var(--color-cyan-deep);
+  /* Hairlines. --color-line is decorative (the card's fill already separates
+     it, so it is exempt from the 3:1 rule); --color-line-input is the real
+     boundary of a form control and measures 3.67:1 against the card, which
+     clears WCAG 1.4.11. */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-2: rgba(255, 255, 255, 0.14);
+  --color-line-input: #6b7280;
+
+  /* Text. Ratios against --color-bg / --color-surface:
+     text 18.31 / 16.96 · dim 7.47 / 6.92 · mute 5.46 / 5.06. All clear AA. */
+  --color-text: #f8fafc;
+  --color-text-dim: #94a3b8;
+  --color-text-mute: #7c8a9e;
+
+  /* The one accent, kept from the old palette: 9.81 / 9.08. */
+  --color-accent: #33c7ff;
+  --color-accent-ink: #0a0f1a;
+
+  --radius-card: 12px;
+  --radius-control: 8px;
 }
 
 @layer base {
@@ -28,6 +43,11 @@
 
   html {
     scroll-behavior: smooth;
+    /* The header is fixed and 64px tall, so an anchor jump would otherwise
+       park each section flush under it. Set here rather than as scroll-mt on
+       every target, so future anchors get it for free. */
+    scroll-padding-top: 5rem;
+    background: var(--color-bg);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -46,12 +66,13 @@
 
   body {
     margin: 0;
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--color-bg);
+    color: var(--color-text);
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -59,9 +80,19 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-weight: 600;
     line-height: 1.1;
+  }
+
+  /* Optical tracking: large type needs negative tracking to stop looking
+     loose, small type needs none. Applied by size rather than by tag so a
+     heading keeps the right value whatever level it sits at. */
+  .text-display {
+    letter-spacing: -0.035em;
+  }
+
+  .text-title {
+    letter-spacing: -0.02em;
   }
 
   a,
@@ -70,44 +101,59 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-cyan-deep);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
 @layer utilities {
-  .brutal-border {
-    border: 3px solid var(--color-ink);
-  }
-
-  .bento-card {
-    background: var(--color-paper);
-    border: 3px solid var(--color-ink);
-    box-shadow: var(--shadow-brutal);
+  /* Replaces .bento-card. Separation comes from fill plus a hairline, not
+     from a hard offset shadow. The hover shifts surface and border rather
+     than translating the card: a 4px diagonal jump is the single loudest
+     "not premium" tell in the old system. */
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
     transition:
-      transform 200ms ease,
-      box-shadow 200ms ease;
+      background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .bento-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0 0 var(--color-ink);
+  .card-interactive:hover {
+    background: var(--color-surface-2);
+    border-color: var(--color-line-2);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .bento-card:hover {
-      transform: none;
-    }
+  /* Eyebrow labels. The old ones were uppercase at 0.2em tracking, which
+     dates a page badly. Sentence case, accent colour, normal tracking. */
+  .eyebrow {
+    color: var(--color-accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
-  .noise-grid {
+  /* Ambient grid, dialled well back from the old 10% cyan: at this strength
+     it reads as texture rather than as a visible grid. */
+  .ambient-grid {
     background-image:
-      linear-gradient(to right, color-mix(in srgb, var(--color-cyan) 10%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-cyan) 10%, transparent) 1px, transparent 1px);
-    background-size: 44px 44px;
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Soft accent bloom behind the hero. Pure CSS, no image weight. */
+  .bloom {
+    background: radial-gradient(
+      60% 50% at 50% 0%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent) 0%,
+      transparent 70%
+    );
   }
 }

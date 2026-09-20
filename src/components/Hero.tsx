@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react"
+import { ArrowRightIcon } from "./icons"
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion"
 
 // Still code-split, even though HeroScene is now plain Canvas2D (no three.js):
@@ -10,38 +11,48 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion()
 
   return (
-    <section
-      id="top"
-      className="relative overflow-hidden border-b-[3px] border-ink bg-navy pt-32 pb-24 sm:pt-40 sm:pb-32"
-    >
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+    <section id="top" className="relative overflow-hidden pt-36 pb-28 sm:pt-44 sm:pb-36">
+      <div className="ambient-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div className="bloom pointer-events-none absolute inset-0" aria-hidden="true" />
+
+      <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden="true">
         <Suspense fallback={null}>
           <HeroScene interactive={!reducedMotion} />
         </Suspense>
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy via-navy/10 to-transparent" aria-hidden="true" />
+      {/* Fades the decorative field out behind the copy. The old gradient ran
+          bottom-up, which darkened the empty area and left the network sitting
+          directly behind the headline. */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-bg/85 to-transparent"
+        aria-hidden="true"
+      />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <p className="mb-5 inline-flex items-center gap-2 border-[3px] border-cyan bg-navy px-3 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-cyan">
-            Vektra Technologies MZ
-          </p>
+          <p className="eyebrow mb-6">Parceiro tecnológico em Moçambique</p>
 
-          <h1 className="text-balance font-display text-4xl font-bold text-white sm:text-6xl">
-            Soluções completas em{" "}
-            <span className="text-cyan">Tecnologia</span> para o seu negócio crescer.
+          <h1 className="text-display text-balance text-[2.75rem] leading-[1.05] font-semibold text-text sm:text-6xl">
+            Soluções completas em tecnologia para o seu negócio crescer.
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-white/75">
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-text-dim">
             Desenvolvimento de software, cloud, domínios e equipamento
-            informático, tudo com um único parceiro tecnológico, em Moçambique.
+            informático, tudo com um único parceiro tecnológico.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a
+              href="#contacto"
+              className="inline-flex min-h-11 items-center gap-2 rounded-control bg-text px-6 py-3 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+            >
+              Falar connosco
+              <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+            </a>
             <a
               href="#servicos"
-              className="inline-flex items-center gap-2 border-[3px] border-ink bg-lime px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-ink shadow-brutal transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-lg"
+              className="inline-flex min-h-11 items-center rounded-control border border-line-2 px-6 py-3 text-sm font-medium text-text transition-colors duration-200 hover:bg-surface"
             >
               Ver serviços
             </a>

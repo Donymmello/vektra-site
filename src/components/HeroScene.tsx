@@ -120,7 +120,7 @@ export default function HeroScene({ interactive = true }: { interactive?: boolea
       })
 
       ctx!.lineWidth = 1
-      ctx!.strokeStyle = "rgba(51, 199, 255, 0.35)"
+      ctx!.strokeStyle = "rgba(51, 199, 255, 0.22)"
       ctx!.beginPath()
       for (const [a, b] of links) {
         ctx!.moveTo(projected[a].x, projected[a].y)
@@ -131,7 +131,9 @@ export default function HeroScene({ interactive = true }: { interactive?: boolea
       for (const p of projected) {
         const radius = Math.max((p.accent ? 4.5 : 2.6) * p.perspective, 0.5)
         ctx!.beginPath()
-        ctx!.fillStyle = p.accent ? "#CBFF4D" : "#33C7FF"
+        // Lime is gone from the palette: the field now runs on the single
+        // accent, with the highlight nodes picked out in near-white instead.
+        ctx!.fillStyle = p.accent ? "#F8FAFC" : "#33C7FF"
         ctx!.arc(p.x, p.y, radius, 0, Math.PI * 2)
         ctx!.fill()
       }
@@ -160,10 +162,23 @@ export default function HeroScene({ interactive = true }: { interactive?: boolea
       draw()
       raf = requestAnimationFrame(frame)
     }
-    raf = requestAnimationFrame(frame)
+
+    // The hero is one screen of a long page: without this the loop kept
+    // running (and every pointermove kept feeding it) for the whole visit,
+    // burning CPU and battery on a canvas nobody could see.
+    const visibility = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!raf) raf = requestAnimationFrame(frame)
+      } else if (raf) {
+        cancelAnimationFrame(raf)
+        raf = 0
+      }
+    })
+    visibility.observe(canvas)
 
     return () => {
       cancelAnimationFrame(raf)
+      visibility.disconnect()
       resizeObserver.disconnect()
       window.removeEventListener("pointermove", onPointerMove)
     }

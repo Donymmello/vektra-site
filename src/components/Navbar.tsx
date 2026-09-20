@@ -13,38 +13,41 @@ const LINKS = [
   { href: "#missao", label: "Sobre" },
 ]
 
-const CONTACT_LINK = { href: "#contacto", label: "Contacto" }
+const CONTACT_LINK = { href: "#contacto", label: "Falar connosco" }
 
-// Vercel-style chrome: a slim, full-bleed dark bar with a hairline border
-// instead of the thick-bordered, hard-shadowed "card" every other panel on
-// this site uses. Deliberately breaks from the neobrutalist system, just
-// for this one piece of persistent UI, per explicit request.
 export function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy/90 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="flex items-center" aria-label="Vektra Technologies MZ, início">
+        <a
+          href="#top"
+          className="inline-flex min-h-11 min-w-11 items-center"
+          aria-label="Vektra Technologies MZ, início"
+        >
           <Logo showWordmark={false} />
         </a>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Navegação principal">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Navegação principal">
           {LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap text-sm font-medium text-white/70 transition-colors hover:text-white"
+              className="whitespace-nowrap text-sm text-text-dim transition-colors duration-200 hover:text-text"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        {/* Primary CTA is a white fill on a near-black page: the highest
+            contrast available, which is what makes it read as the one action
+            without needing a loud brand colour. */}
+        <div className="hidden items-center md:flex">
           <a
             href={CONTACT_LINK.href}
-            className="rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink transition-opacity hover:opacity-85"
+            className="rounded-control bg-text px-4 py-2 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
           >
             {CONTACT_LINK.label}
           </a>
@@ -56,7 +59,7 @@ export function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-control text-text transition-colors duration-200 hover:bg-surface md:hidden"
         >
           {open ? <CloseIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
         </button>
@@ -66,14 +69,14 @@ export function Navbar() {
         <nav
           id="mobile-menu"
           aria-label="Navegação móvel"
-          className="flex flex-col border-t border-white/10 bg-navy px-4 py-2 sm:px-6 md:hidden"
+          className="flex flex-col border-t border-line bg-bg px-4 py-2 sm:px-6 md:hidden"
         >
           {LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="border-b border-white/10 py-3 text-[15px] font-medium text-white/80 last:border-b-0"
+              className="border-b border-line py-3.5 text-[15px] text-text-dim transition-colors duration-200 last:border-b-0 hover:text-text"
             >
               {link.label}
             </a>
@@ -81,7 +84,7 @@ export function Navbar() {
           <a
             href={CONTACT_LINK.href}
             onClick={() => setOpen(false)}
-            className="mt-3 mb-2 rounded-full bg-lime px-4 py-2.5 text-center text-sm font-semibold text-ink"
+            className="mt-3 mb-2 rounded-control bg-text px-4 py-3 text-center text-sm font-medium text-bg"
           >
             {CONTACT_LINK.label}
           </a>
