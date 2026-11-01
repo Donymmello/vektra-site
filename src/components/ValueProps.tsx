@@ -1,11 +1,11 @@
 const PROPS = [
   {
-    title: "Suporte 24/7",
-    description: "Equipa disponível sempre que a sua operação precisar.",
+    title: "Apoio próximo",
+    description: "Acompanhamento local para as necessidades da sua operação.",
   },
   {
-    title: "Cloud-native",
-    description: "Infraestrutura moderna, escalável e pronta para crescer consigo.",
+    title: "Soluções escaláveis",
+    description: "Sistemas preparados para acompanhar o crescimento da sua empresa.",
   },
   {
     title: "Segurança em primeiro lugar",
@@ -21,9 +21,9 @@ export function ValueProps() {
   return (
     <section id="porque-nos" className="border-t border-line py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        {/* An h2, not a styled <p>: this was the only section whose eyebrow
-            wasn't backed by a real heading, so the outline jumped h1 -> h3. */}
-        <h2 className="eyebrow">Porquê a Vektra</h2>
+        <h2 className="text-display text-balance max-w-2xl text-3xl font-semibold text-text sm:text-4xl">
+          Tecnologia com acompanhamento próximo.
+        </h2>
 
         <div className="mt-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {/* A single-pixel gap over a hairline-coloured backdrop gives one

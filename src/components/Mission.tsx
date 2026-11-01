@@ -7,8 +7,7 @@ export function Mission() {
     <section id="missao" className="border-t border-line py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <p className="eyebrow">A nossa filosofia</p>
-          <h2 className="text-display mt-4 text-balance text-3xl font-semibold text-text sm:text-5xl">
+          <h2 className="text-display text-balance text-3xl font-semibold text-text sm:text-5xl">
             Tecnologia com propósito, feita para durar.
           </h2>
           <p className="mt-5 max-w-xl leading-relaxed text-text-dim">

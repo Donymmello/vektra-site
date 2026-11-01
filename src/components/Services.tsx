@@ -1,18 +1,17 @@
 import { services } from "../data/services"
-import { CheckIcon } from "./icons"
+import { ArrowRightIcon, CheckIcon } from "./icons"
 
 export function Services() {
   return (
     <section id="servicos" className="border-t border-line py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <p className="eyebrow">O que fazemos</p>
-          <h2 className="text-display mt-4 text-balance text-3xl font-semibold text-text sm:text-5xl">
+          <h2 className="text-display text-balance text-3xl font-semibold text-text sm:text-5xl">
             Um único parceiro para toda a sua tecnologia.
           </h2>
         </div>
 
-        <div className="mt-14 grid grid-flow-row-dense gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-flow-row-dense gap-4 sm:grid-cols-2">
           {services.map((service) => {
             const Icon = service.icon
             return (
@@ -53,6 +52,16 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
+
+                {service.id === "software" && (
+                  <a
+                    href="/criacao-de-sites/"
+                    className="mt-6 inline-flex min-h-11 w-fit items-center gap-2 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+                  >
+                    Criação de sites em Moçambique
+                    <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                )}
               </article>
             )
           })}

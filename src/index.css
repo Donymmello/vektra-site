@@ -42,7 +42,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     /* The header is fixed and 64px tall, so an anchor jump would otherwise
        park each section flush under it. Set here rather than as scroll-mt on
        every target, so future anchors get it for free. */
@@ -156,4 +156,18 @@
       transparent 70%
     );
   }
+}
+
+.site-atmosphere__parallax {
+  position: absolute;
+  inset: -18% 0;
+}
+
+.site-atmosphere__scene {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100dvh;
+  transform: translate(-50%, -50%);
 }

@@ -47,8 +47,7 @@ export function Contact() {
     <section id="contacto" className="border-t border-line py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
         <div>
-          <p className="eyebrow">Contacto</p>
-          <h2 className="text-display mt-4 text-balance text-3xl font-semibold text-text sm:text-5xl">
+          <h2 className="text-display text-balance text-3xl font-semibold text-text sm:text-5xl">
             Vamos construir a próxima etapa do seu negócio.
           </h2>
           <p className="mt-5 max-w-md leading-relaxed text-text-dim">
@@ -141,7 +140,7 @@ export function Contact() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-control bg-text px-6 py-3 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-control bg-accent px-6 py-3 text-sm font-medium text-accent-ink transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === "sending" ? "A enviar…" : "Enviar mensagem"}
               {status !== "sending" && <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />}

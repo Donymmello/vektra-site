@@ -11,6 +11,7 @@ const LINKS = [
   { href: "#servicos", label: "Serviços" },
   { href: "#produtos", label: "Produtos" },
   { href: "#missao", label: "Sobre" },
+  { href: "#equipa", label: "Equipa" },
 ]
 
 const CONTACT_LINK = { href: "#contacto", label: "Falar connosco" }
@@ -26,7 +27,7 @@ export function Navbar() {
           className="inline-flex min-h-11 min-w-11 items-center"
           aria-label="Vektra Technologies MZ, início"
         >
-          <Logo showWordmark={false} />
+          <Logo />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Navegação principal">
@@ -47,7 +48,7 @@ export function Navbar() {
         <div className="hidden items-center md:flex">
           <a
             href={CONTACT_LINK.href}
-            className="rounded-control bg-text px-4 py-2 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90"
+            className="rounded-control bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-opacity duration-200 hover:opacity-90"
           >
             {CONTACT_LINK.label}
           </a>
@@ -84,7 +85,7 @@ export function Navbar() {
           <a
             href={CONTACT_LINK.href}
             onClick={() => setOpen(false)}
-            className="mt-3 mb-2 rounded-control bg-text px-4 py-3 text-center text-sm font-medium text-bg"
+            className="mt-3 mb-2 rounded-control bg-accent px-4 py-3 text-center text-sm font-medium text-accent-ink"
           >
             {CONTACT_LINK.label}
           </a>

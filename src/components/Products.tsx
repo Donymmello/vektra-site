@@ -7,8 +7,7 @@ export function Products() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="eyebrow">Os nossos produtos</p>
-            <h2 className="text-display mt-4 text-balance text-3xl font-semibold text-text sm:text-5xl">
+            <h2 className="text-display text-balance text-3xl font-semibold text-text sm:text-5xl">
               Sistemas próprios, feitos para o seu negócio.
             </h2>
             <p className="mt-5 max-w-xl leading-relaxed text-text-dim">
@@ -26,7 +25,7 @@ export function Products() {
           </a>
         </div>
 
-        <div className="mt-14 grid gap-4 lg:grid-cols-3">
+        <div className="mt-14 grid gap-4 lg:grid-cols-[1.15fr_0.85fr] lg:grid-rows-2">
           {products.map((product) => {
             const Icon = product.icon
             // Every product follows the same rule: once it has a live `url`
@@ -41,7 +40,9 @@ export function Products() {
               <Wrapper
                 key={product.id}
                 {...linkProps}
-                className={`card flex flex-col p-7 ${product.url ? "card-interactive" : ""}`}
+                className={`card flex flex-col p-7 ${
+                  product.id === "tshemba" ? "lg:row-span-2 sm:p-9" : ""
+                } ${product.url ? "card-interactive" : ""}`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div

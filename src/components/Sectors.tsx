@@ -51,8 +51,7 @@ export function Sectors() {
     <section id="areas-estrategicas" className="border-t border-line py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <p className="eyebrow">Áreas estratégicas</p>
-          <h2 className="text-display mt-4 text-balance text-3xl font-semibold text-text sm:text-5xl">
+          <h2 className="text-display text-balance text-3xl font-semibold text-text sm:text-5xl">
             Sectores onde fazemos a diferença.
           </h2>
           <p className="mt-5 max-w-xl leading-relaxed text-text-dim">
@@ -61,14 +60,12 @@ export function Sectors() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {SECTORS.map((sector) => {
             const Icon = sector.icon
             return (
-              <article key={sector.name} className="flex flex-col gap-4 bg-surface p-7 sm:p-8">
-                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-accent/10 text-accent">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </div>
+              <article key={sector.name} className="flex flex-col gap-4 border-t border-line pt-6">
+                <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 <div>
                   <h3 className="text-title text-lg font-semibold text-text">{sector.name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-text-mute">{sector.description}</p>

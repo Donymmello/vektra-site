@@ -27,7 +27,7 @@ export const services: Service[] = [
       "Criamos software robusto e escalável, de aplicações web a integrações via API.",
     bullets: ["Websites & Apps", "APIs", "Plataformas SaaS"],
     icon: CodeIcon,
-    span: "md",
+    span: "lg",
   },
 
   // ponytail: ocultado a pedido do cliente (2026-08-28). Reativar quando a
